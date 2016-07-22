@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+
+       let tags = ["ITEM0","ITEM3-2","ITEM3-2.5","ITEM0","ITEM1"];
+        function formatTags(tags){
+            return tags.map(function(tag){
+                let info = tag.split("-");
+                return {
+                    barcode:info[0],
+                    amount:parseFloat(info[1]) || 1
+                };
+            });
+        }
+        let barcodes = formatTags(tags);
+        console.log(JSON.stringify(barcodes,null,4));
+
+        function mergeBarcodes(barcodes){
+            let mergedBarcodes = barcodes.reduce(function(cur,old){
+                let existItem = cur.find(function(item){
+                    return item.barcode === old.barcode;
+                });
+                if(existItem){
+                    existItem.amount += old.amount;
+                }
+                else{
+                    cur.push(old);
+                }
+                return cur;
+            },[]);
+        }
+        let mergedBarcodes = mergeBarcodes(barcodes);
+       console.log(JSON.stringify(mergedBarcodes));
+    </script>
+</body>
+</html>
